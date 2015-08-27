@@ -11,6 +11,12 @@ TagManager:
   - Whale
   - Water Fountain
   - Settings
+  - ControlScheme
+  - Database
+  - Spawner
+  - Wave
+  - Scorescreen
+  - FirstCloud
   layers:
   - Default
   - TransparentFX

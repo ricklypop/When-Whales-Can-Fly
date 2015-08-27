@@ -6,7 +6,7 @@ public class RemoveFromParent : MonoBehaviour {
 	public float y;
 
 	void Start () {
-        transform.parent = null;
+		transform.SetParent (null);
         if(x == 0)
 		    transform.position = new Vector2 (Camera.main.transform.position.x, y);
         else

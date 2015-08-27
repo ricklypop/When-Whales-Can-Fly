@@ -12,6 +12,7 @@ public class WhaleGameStart : MonoBehaviour {
 
         if (time >= startTime && !added)
         {
+            GameObject.Find("Scorescreen").GetComponent<ShowHideScore>().show = true;
             GetComponent<Rigidbody2D>().isKinematic = false;
             GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
             added = true;

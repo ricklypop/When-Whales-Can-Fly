@@ -31,13 +31,7 @@ public class Leaderboard : MonoBehaviour {
 
 	void loadPage(){
 		leaderInfo = null;
-		StartCoroutine(dataBase.setPage(placeholder));
-        StartCoroutine(dataBase.getUsername());
-        StartCoroutine(dataBase.getUsername());
-        StartCoroutine(dataBase.getUsername());
-        StartCoroutine(dataBase.getUsername());
-        StartCoroutine(dataBase.getUsername());
-        StartCoroutine(dataBase.getHighscore());
+        StartCoroutine(dataBase.setPage(placeholder));
     }
 
     void Update()

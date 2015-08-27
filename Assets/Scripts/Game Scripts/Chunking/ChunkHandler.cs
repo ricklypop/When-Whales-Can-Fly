@@ -20,7 +20,7 @@ public class ChunkHandler
     {
         Rect rect = new Rect(Mathf.FloorToInt(target.x / chunkSize) * chunkSize, (Mathf.FloorToInt(target.y / chunkSize)) * chunkSize, chunkSize, chunkSize);
         Chunk newChunk = new Chunk(rect);
-        chunks.Add(newChunk);
+        Chunks.Add(newChunk);
         return newChunk;
     }
 
@@ -28,7 +28,7 @@ public class ChunkHandler
     {
         if (direction == "left")
         {
-            int maxX = (Mathf.FloorToInt(position.x / chunkSize) * chunkSize) - chunkSize;
+            int maxX = (Mathf.FloorToInt(position.x / chunkSize) * chunkSize) - (chunkSize * 2);
             foreach (Chunk chunk in getNonRenderChunks(position))
             {
                 if (chunk.ChunkRect.position.x < maxX)
@@ -38,7 +38,7 @@ public class ChunkHandler
 
         if (direction == "right")
         {
-            int minX = (Mathf.FloorToInt(position.x / chunkSize) * chunkSize) + chunkSize;
+            int minX = (Mathf.FloorToInt(position.x / chunkSize) * chunkSize) + (chunkSize * 2);
             foreach (Chunk chunk in getNonRenderChunks(position))
             {
                 if (chunk.ChunkRect.position.x > minX)
@@ -58,7 +58,7 @@ public class ChunkHandler
 
         if (direction == "down")
         {
-            int minY = (Mathf.FloorToInt(position.y / chunkSize) * chunkSize);
+            int minY = (Mathf.FloorToInt(position.y / chunkSize) - (chunkSize * 2));
             foreach (Chunk chunk in getNonRenderChunks(position))
             {
                 if (chunk.ChunkRect.position.y < minY)
@@ -73,12 +73,12 @@ public class ChunkHandler
         {
             GameObject.Destroy(obj);
         }
-        chunks.Remove(destory);
+        Chunks.Remove(destory);
     }
 
     List<Chunk> getNonRenderChunks(Vector2 position)
     {
-        List<Chunk> nonRenderChunks = new List<Chunk>(chunks);
+        List<Chunk> nonRenderChunks = new List<Chunk>(Chunks);
         foreach (Chunk chunk in getRenderChunks(position))
         {
             nonRenderChunks.Remove(chunk);
@@ -89,7 +89,7 @@ public class ChunkHandler
     public List<Chunk> getEmptyChunks()
     {
         List<Chunk> emptyChunks = new List<Chunk>();
-        foreach (Chunk chunk in chunks)
+        foreach (Chunk chunk in Chunks)
         {
             if (chunk.Objects.Count == 0)
                 emptyChunks.Add(chunk);
@@ -132,7 +132,7 @@ public class ChunkHandler
 
     public Chunk getChunk(Vector2 position)
     {
-        foreach (Chunk chunk in chunks)
+        foreach (Chunk chunk in Chunks)
         {
             if (chunk.ChunkRect.Contains(position))
             {
@@ -191,6 +191,19 @@ public class ChunkHandler
         set
         {
             autoDestroyDown = value;
+        }
+    }
+
+    public List<Chunk> Chunks
+    {
+        get
+        {
+            return chunks;
+        }
+
+        set
+        {
+            chunks = value;
         }
     }
 }

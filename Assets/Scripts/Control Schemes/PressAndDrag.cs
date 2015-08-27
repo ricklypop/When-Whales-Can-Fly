@@ -27,7 +27,7 @@ public class PressAndDrag : MonoBehaviour {
 	void Update () {
         if (rigidBody != null)
         {
-            if (startPosition != Vector3.zero)
+            if (startPosition != Vector3.zero && currentPosition != Vector3.zero)
             {
                 startPosition += Camera.main.transform.position - cameraPos;
                 currentPosition += Camera.main.transform.position - cameraPos;

@@ -3,6 +3,7 @@
 public class CloudSpawner : MonoBehaviour {
     private ChunkHandler handler;
     private Chunk currentChunk;
+    private CloudSeperator cloudSep;
     private Vector2 trackPos;
     private Transform trackObject;
 
@@ -16,8 +17,13 @@ public class CloudSpawner : MonoBehaviour {
     void Start()
     {
         Handler = new ChunkHandler(chunkSize);
+        Handler.AutoDestroyRight = true;
         Handler.AutoDestroyLeft = true;
         trackObject = Camera.main.transform;
+        cloudSep = gameObject.AddComponent<CloudSeperator>();
+        cloudSep.handler = handler;
+        cloudSep.trackObject = trackObject;
+        cloudSep.minDistance = minDistance;
     }
 
 	void Update () {
@@ -58,7 +64,6 @@ public class CloudSpawner : MonoBehaviour {
             obj.gameObject.GetComponent<RandomSpawn>().setSpawn(chunk.ChunkRect);
             obj.gameObject.GetComponent<Handler>().handler = Handler;
             obj.gameObject.GetComponent<Handler>().trackObject = trackObject;
-            obj.gameObject.GetComponent<Cloud>().MinDistance = minDistance;
         }
     }
 

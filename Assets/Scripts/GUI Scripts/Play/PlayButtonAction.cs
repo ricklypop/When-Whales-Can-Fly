@@ -20,7 +20,8 @@ public class PlayButtonAction : MonoBehaviour {
 			Camera.main.transform.Translate( Camera.main.transform.right /2);
 			if(distance >= 25){
                 Camera.main.GetComponent<CameraMovement>().lockCamera = true;
-				Destroy(canvas);
+                Camera.main.GetComponent<AdjustAngle>().adjust = true;
+                Destroy(canvas);
 			}
 		}
 	}

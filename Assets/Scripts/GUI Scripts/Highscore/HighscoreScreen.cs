@@ -15,21 +15,24 @@ public class HighscoreScreen : MonoBehaviour {
 		GetComponent<CanvasGroup> ().alpha = 0f;
 		this.GetComponent<Canvas> ().worldCamera = Camera.main;
         dataBase = GameObject.FindGameObjectWithTag("Database").GetComponent<DatabaseClient>();
-	}
+        StartCoroutine(dataBase.getUsername());
+        score = (int) GameObject.FindGameObjectWithTag("Settings").GetComponent<BasicSettings>().currentScore;
+        GameObject.FindGameObjectWithTag("Settings").GetComponent<BasicSettings>().currentScore = 0;
+    }
 	
 
 	void Update () {
 		if (distance < 25) { 
 			if(distance == 0){
 				getUsername ();
-				if (username == "") {
+                getHighscore();
+                if (username == "") {
 					Transform ui = (Transform)Instantiate (usernameUI, new Vector3 (0, 0, 90), Quaternion.identity);
 					ui.SetParent (this.transform);
 					ui.localScale = new Vector3 (1, 1, 1);
 					ui.localPosition = new Vector3 (0, 0, 0);
 				}
 				else if(score <= highscore && username != ""){
-					getHighscore();
 					Transform ui = (Transform)Instantiate (normalScoreUI, new Vector3 (0, 0, 90), Quaternion.identity);
 					ui.SetParent (this.transform);
 					ui.localScale = new Vector3 (1, 1, 1);
@@ -37,7 +40,6 @@ public class HighscoreScreen : MonoBehaviour {
 					ui.GetChild(1).GetComponent<Text>().text = score.ToString();
 					ui.GetChild(2).GetComponent<Text>().text = highscore.ToString();
 				}else if(username != ""){
-					getHighscore();
 					Transform ui = (Transform)Instantiate (newHighscoreUI, new Vector3 (0, 0, 90), Quaternion.identity);
 					ui.SetParent (this.transform);
 					ui.localScale = new Vector3 (1, 1, 1);

@@ -6,6 +6,7 @@ public class BackgroundSpawner : MonoBehaviour
     private ChunkHandler handler;
     private Chunk currentChunk;
     private Transform trackObject;
+    private CloudSeperator cloudSep;
     private float maxTime;
     private float time;
 
@@ -20,6 +21,13 @@ public class BackgroundSpawner : MonoBehaviour
         trackObject = Camera.main.transform;
         maxTime = Random.Range(1f, 2f);
         handler.AutoDestroyLeft = true;
+        handler.AutoDestroyDown = true;
+        handler.AutoDestroyRight = true;
+        handler.AutoDestroyUp = true;
+        cloudSep = gameObject.AddComponent<CloudSeperator>();
+        cloudSep.handler = handler;
+        cloudSep.trackObject = trackObject;
+        cloudSep.minDistance = 3;
     }
 
     void Update()
@@ -38,7 +46,19 @@ public class BackgroundSpawner : MonoBehaviour
             //Fill empty chunks if they meet hieght requirement
             foreach (Chunk chunk in handler.getEmptyChunks())
             {
-                Populate(chunk);
+                Populate(chunk, true);
+            }
+
+            //This is going to look confusing, it is to check if there is a background in the chunk
+            foreach (Chunk chunk in handler.getRenderChunks(trackObject.position))
+            {
+                bool hasBackground = false;
+                foreach (GameObject obj in chunk.Objects)
+                    if (obj != null && obj.GetComponent<BoxCollider2D>() == null)
+                        hasBackground = true;
+
+                if (!hasBackground)
+                    Populate(chunk, false);
             }
         }
 
@@ -57,26 +77,29 @@ public class BackgroundSpawner : MonoBehaviour
         float y = Random.Range(handler.getChunk(new Vector3(trackObject.transform.position.x, trackObject.transform.position.y - chunkSize, 1)).ChunkRect.y, handler.getChunk(new Vector3(trackObject.transform.position.x, trackObject.transform.position.y + (chunkSize * 2), 1)).ChunkRect.y);
         if (y > backCloudHeight)
         {
-            Transform cloud = (Transform)Instantiate(backCloud, new Vector3(x, y, 10), Quaternion.identity);
+            Transform cloud = (Transform)Instantiate(backCloud, new Vector3(0, 0, 10), Quaternion.identity);
+            handler.getChunk(new Vector2(x, y)).Objects.Add(cloud.gameObject);
+            cloud.GetComponent<RandomSpawn>().setSpawn(handler.getChunk(new Vector2(x, y)).ChunkRect);
             cloud.GetComponent<Handler>().handler = handler;
             cloud.GetComponent<Handler>().trackObject = trackObject;
-            cloud.GetComponent<Cloud>().MinDistance = 4;
         }
     }
 
-    void Populate(Chunk chunk)
+    void Populate(Chunk chunk, bool spawnClouds)
     {
         Transform obj = (Transform)Instantiate(background, new Vector3(chunk.ChunkRect.x + (chunkSize / 2), chunk.ChunkRect.y + (chunkSize / 2), 10), Quaternion.identity);
         chunk.Objects.Add(obj.gameObject);
         
         for(int i = Random.Range(0, 2); i < 3; i++)
         {
-
-            Transform cloud = (Transform)Instantiate(backCloud, new Vector3(0, 0, 10), Quaternion.identity);
-            cloud.GetComponent<RandomSpawn>().setSpawn(chunk.ChunkRect);
-            cloud.GetComponent<Handler>().handler = handler;
-            cloud.GetComponent<Handler>().trackObject = trackObject;
-            cloud.GetComponent<Cloud>().MinDistance = 4;
+            if (chunk.ChunkRect.y > backCloudHeight && spawnClouds)
+            {
+                Transform cloud = (Transform)Instantiate(backCloud, new Vector3(0, 0, 10), Quaternion.identity);
+                chunk.Objects.Add(cloud.gameObject);
+                cloud.GetComponent<RandomSpawn>().setSpawn(chunk.ChunkRect);
+                cloud.GetComponent<Handler>().handler = handler;
+                cloud.GetComponent<Handler>().trackObject = trackObject;
+            }
         }
     }
 }

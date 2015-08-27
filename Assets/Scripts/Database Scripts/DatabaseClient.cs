@@ -15,7 +15,7 @@ public class DatabaseClient : MonoBehaviour{
 	}
 
 	public IEnumerator setHighscore(int score){
-		string url = "http://" + adress + "/LeaderBoardService/lb/putScore";
+		string url = "http://" + adress + "/LeaderBoardService/lb/putScore/";
 		WWWForm form = new WWWForm();
 		form.AddField("score", score.ToString());
 		form.AddField("userid", SystemInfo.deviceUniqueIdentifier);

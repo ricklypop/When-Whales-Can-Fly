@@ -24,6 +24,9 @@ public class CameraMovement : MonoBehaviour {
             lockCamera = false;
 
         if (!lockCamera)
+        {
             lastPos = Vector3.zero;
+            transform.position = new Vector3(transform.position.x, settings.baseGUIHeight, transform.position.z);
+        }
 	}
 }

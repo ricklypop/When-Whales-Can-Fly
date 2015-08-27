@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttachFountain : MonoBehaviour {
+public class AttachFountainDestoryPlay : MonoBehaviour {
     private bool done;
     private float time;
 

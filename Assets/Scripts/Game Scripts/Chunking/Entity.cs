@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Entity : MonoBehaviour {
     private ChunkHandler handler;
-    private Chunk currrentChunk;
+    public Chunk currrentChunk;
     private Vector3 lastPos;
 
 	void Update () {
